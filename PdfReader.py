@@ -2,8 +2,11 @@ import fitz  # PyMuPDF
 import pandas as pd
 import re
 
+
+ruta = "C:/Users/ignac/Desktop/pdftoexcel/"
+nombre_pdf = "11-24"
 # Abre el archivo PDF
-pdf_documento = fitz.open("enlace/archivo.pdf")
+pdf_documento = fitz.open(ruta + nombre_pdf + ".pdf")
 
 titulos = ['Fecha', 'Descripcion', 'ID de operacion', 'Valor', 'Saldo']
 
@@ -54,18 +57,23 @@ pi = 0
 datos_concatenados = []
 while i < len(datos_filtrados):
 
-    match = re.match(r"([a-zA-Z]+)([0-9]+)", datos_filtrados[i])
+    match = re.match(r"([a-zA-ZñÑ]+)([0-9]+)", datos_filtrados[i])
+    
 
     if len(datos_filtrados[i].split('-')) == 3:
         pi = i
         datos_concatenados.append(datos_filtrados[i])
-    elif match and len(match.group(2)) >= 9:
+    elif match and len(match.group(2)) >= 8:
+
+
         datos_concatenados.append(" ".join(datos_filtrados[pi + 1 : i]) + " " + match.group(1))
         datos_concatenados.append(match.group(2))
             
-    elif len(datos_filtrados[i]) >= 9 and datos_filtrados[i].isdigit():
+    elif len(datos_filtrados[i]) >= 8 and datos_filtrados[i].isdigit():
+
         datos_concatenados.append(" ".join(datos_filtrados[pi + 1 : i]))
         datos_concatenados.append(datos_filtrados[i])
+
     elif datos_filtrados[i] == '$':
         datos_concatenados.append(datos_filtrados[i] + datos_filtrados[i + 1])
 
@@ -87,4 +95,4 @@ while t < len(datos_concatenados):
 df = pd.DataFrame(datos_final, columns=titulos) 
 
 # Guardar el DataFrame en un archivo Excel
-df.to_excel('detalle_De_movimientos.xlsx', index=False)
+df.to_excel(nombre_pdf +'.xlsx', index=False)
