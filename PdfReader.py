@@ -57,7 +57,7 @@ pi = 0
 datos_concatenados = []
 while i < len(datos_filtrados):
 
-    match = re.match(r"([a-zA-ZñÑ]+)([0-9]+)", datos_filtrados[i])
+    match = re.match(r"([a-zA-ZñÑ,.]+)([0-9]+)", datos_filtrados[i])
     
 
     if len(datos_filtrados[i].split('-')) == 3:
